@@ -98,109 +98,80 @@ errorMessage = {
     "PUO": "PREMIUM_USERS_ONLY",
 }
 
+#Custom exceptions
+class LoginRequired(Exception):
+    "Custom exception for login required"
+    pass
+
+class SubscriptionPackageRequired(Exception):
+    "Custom exception for Subscription Package Required"
+    pass
+
+class NodownloadsLeft(Exception):
+    "Custom exception for No downloads left"
+    pass
+
+class PremiumUsersOnly(Exception):
+    "Custom exception Premium users only"
+    pass
+
+class SubscriptionPackageExpired(Exception):
+    "Custom exception for SUBSCRIPTION PACKAGE REQUIRED HAS EXPIRED"
+    pass
 
 def makeVerifcations(request):
-
-    errorMessage = {
-        "SPR": "SUBSCRIPTION_PACKAGE_REQUIRED",
-        "SPX": "SUBSCRIPTION_PACKAGE_REQUIRED_HAS_EXPIRED",
-        "LR" : "LOGIN_REQUIRED",
-        "NDL": "NO_DOWNLOADS_LEFT",
-        "PUO": "PREMIUM_USERS_ONLY",
-    }
-
     if request.user.is_authenticated:
         try:
             # Get the current user UserProfile
             userProfile = UserProfile.objects.get(user=request.user)
         except UserProfile.DoesNotExist as e:
-            messages.add_message(request, messages.ERROR,  errorMessage["SPR"])
-            raise Exception(errorMessage["SPR"])
+            raise  SubscriptionPackageRequired(errorMessage["SPR"])
 
         #check whether user has a subscription package
         if not userProfile.subscription_package:
-            messages.add_message(request, messages.ERROR, errorMessage["SPR"])
-            raise Exception(errorMessage["SPR"])
+            raise SubscriptionPackageRequired(errorMessage["SPR"])
 
         #check whether the subscription expiration_date has reached
         if userProfile.calc_expiration_date() < timezone.now():
             userProfile.subscription_package = None
             userProfile.save()
-            messages.add_message(request, messages.ERROR, "SPX")
-            raise Exception(errorMessage["SPX"])
-
-
-        #Get the question selected
-        q = models.Question.objects.get(pk = kwargs["id"])
-
+            raise SubscriptionPackageExpired(errorMessage["SPX"])
 
         #if user is on free subscription but trying to download a Premium question
         if q.question_type.upper() != "FREE" and userProfile.subscription_package.name.upper() == "FREE":
-            messages.add_message(request,messages.ERROR,errorMessage["PUO"])
-            raise Exception(errorMessage["PUO"])
+            raise PremiumUsersOnly(errorMessage["PUO"])
 
         # check if user has  some downloads left
         if  userProfile.calc_downloads_left() < 1:
-            messages.add_message(request,messages.ERROR,errorMessage["NDL"])
-            raise Exception(errorMessage["NDL"])
+            raise NodownloadsLeft(errorMessage["NDL"])
 
     #Login required
-    messages.add_message(request, messages.ERROR,  errorMessage["LR"])
-    raise Exception(errorMessage["SPR"])
+    raise LoginRequired(errorMessage["LR"])
 
 #handles download from site
 class DownloadQuestionView(View):
     def get(self, request,*args, **kwargs):
         response = HttpResponseRedirect(reverse("home_question_details",args=[kwargs["id"]]))
-        if request.user.is_authenticated:
-            try:
-                # Get the current user UserProfile
-                userProfile = UserProfile.objects.get(user=request.user)
-            except UserProfile.DoesNotExist as e:
-                messages.add_message(request, messages.ERROR,  errorMessage["SPR"])
-                return response
+        try:
+            makeVerifcations(self.request)
+        except LoginRequired as e:
+            messages.add_message(request, messages.ERROR,  errorMessage["LR"])
+        except SubscriptionPackageRequired as e:
+            messages.add_message(request, messages.ERROR, "SPR")
+        except SubscriptionPackageExpired as e:
+            messages.add_message(request, messages.ERROR, "SPR")  
+        except PremiumUsersOnly as e:
+            messages.add_message(request,messages.ERROR,errorMessage["PUO"])
+        except NodownloadsLeft as e:
+            messages.add_message(request,messages.ERROR,errorMessage["NDL"])
+        finally:
+            pass
 
-            #check whether user has a subscription package
-            if not userProfile.subscription_package:
-                messages.add_message(request, messages.ERROR, errorMessage["SPR"])
-                return response
+        #increase the user total number of download if the question a premium
+        """if q.question_type.upper() != "FREE":
+            userProfile.total_downloads +=1
+            userProfile.save()""" 
 
-            #check whether the subscription expiration_date has reached
-            if userProfile.calc_expiration_date() < timezone.now():
-                userProfile.subscription_package = None
-                userProfile.save()
-                messages.add_message(request, messages.ERROR, "SPX")
-                return response
-
-
-            #Get the question selected
-            q = models.Question.objects.get(pk = kwargs["id"])
-
-
-            #if user is on free subscription but trying to download a Premium question
-            if q.question_type.upper() != "FREE" and userProfile.subscription_package.name.upper() == "FREE":
-                messages.add_message(request,messages.ERROR,errorMessage["PUO"])
-                return response
-
-            # check if user has  some downloads left
-            if  userProfile.calc_downloads_left() < 1:
-                messages.add_message(request,messages.ERROR,errorMessage["NDL"])
-                return response
-
-            with open(q.question_file.path,"rb") as f:
-                response = HttpResponse(f.read())
-                response["content_type"] = "application/pdf"
-                response["Content-Disposition"] = "attachment; filename={0}".format(q.question_file.name)
-            q.number_of_downloads += 1
-
-            #increase the user total number of download if the question a premium
-            if q.question_type.upper() != "FREE":
-                userProfile.total_downloads +=1
-                userProfile.save()
-
-            return response
-
-        messages.add_message(request, messages.ERROR,  errorMessage["LR"])
         return response
 
 
@@ -215,28 +186,3 @@ class DownloadSolutionView(View):
                 return response
         return JsonResponse({"user":"anonymous"})
 
-# handles download from admin sites
-@method_decorator(login_required,name="dispatch")
-class QuestionsDowloadView(View):
-    def get(self, request,*args, **kwargs):
-        #generate question file absolute path => Question/code/year/filename
-        filename = os.path.join("QUESTIONS",kwargs["code"],kwargs["year"],kwargs["filename"]).replace("\\","/")
-        # get question using the generated absolute path
-        q = models.Question.objects.get(question_file = filename)
-        #open the question_file of the question and server it as attachment
-        with open(q.question_file.path,"rb") as f:
-            response = HttpResponse(f.read())
-            response["content_type"] = "application/pdf"
-            response["Content-Disposition"] = "attachment; filename={0}".format(q.question_file.name)
-        return response
-
-@method_decorator(login_required,name="dispatch")
-class SolutionsDowloadView(View):
-    def get(self, request,*args, **kwargs):
-        filename = os.path.join("SOLUTIONS",kwargs["code"],kwargs["year"],kwargs["filename"]).replace("\\","/")
-        q = models.Question.objects.get(solution_file = filename)
-        with open(q.solution_file.path,"rb") as f:
-            response = HttpResponse(f.read())
-            response["content_type"] = "application/pdf"
-            response["Content-Disposition"] = "attachment; filename={0}".format(q.solution_file.name)
-        return response
