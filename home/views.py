@@ -71,7 +71,7 @@ class SearchResultsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         #Get the all question under the course
-        form = SearchForm(self.request.GET)
+        form = SearchForm(request.GET)
         if form.is_valid():
             userInput = form.cleaned_data["searchInput"].upper()
             splitted_userInput = userInput.split(" ")
@@ -98,28 +98,78 @@ errorMessage = {
     "PUO": "PREMIUM_USERS_ONLY",
 }
 
+
+def makeVerifcations(request):
+
+    errorMessage = {
+        "SPR": "SUBSCRIPTION_PACKAGE_REQUIRED",
+        "SPX": "SUBSCRIPTION_PACKAGE_REQUIRED_HAS_EXPIRED",
+        "LR" : "LOGIN_REQUIRED",
+        "NDL": "NO_DOWNLOADS_LEFT",
+        "PUO": "PREMIUM_USERS_ONLY",
+    }
+
+    if request.user.is_authenticated:
+        try:
+            # Get the current user UserProfile
+            userProfile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist as e:
+            messages.add_message(request, messages.ERROR,  errorMessage["SPR"])
+            raise Exception(errorMessage["SPR"])
+
+        #check whether user has a subscription package
+        if not userProfile.subscription_package:
+            messages.add_message(request, messages.ERROR, errorMessage["SPR"])
+            raise Exception(errorMessage["SPR"])
+
+        #check whether the subscription expiration_date has reached
+        if userProfile.calc_expiration_date() < timezone.now():
+            userProfile.subscription_package = None
+            userProfile.save()
+            messages.add_message(request, messages.ERROR, "SPX")
+            raise Exception(errorMessage["SPX"])
+
+
+        #Get the question selected
+        q = models.Question.objects.get(pk = kwargs["id"])
+
+
+        #if user is on free subscription but trying to download a Premium question
+        if q.question_type.upper() != "FREE" and userProfile.subscription_package.name.upper() == "FREE":
+            messages.add_message(request,messages.ERROR,errorMessage["PUO"])
+            raise Exception(errorMessage["PUO"])
+
+        # check if user has  some downloads left
+        if  userProfile.calc_downloads_left() < 1:
+            messages.add_message(request,messages.ERROR,errorMessage["NDL"])
+            raise Exception(errorMessage["NDL"])
+
+    #Login required
+    messages.add_message(request, messages.ERROR,  errorMessage["LR"])
+    raise Exception(errorMessage["SPR"])
+
 #handles download from site
 class DownloadQuestionView(View):
     def get(self, request,*args, **kwargs):
         response = HttpResponseRedirect(reverse("home_question_details",args=[kwargs["id"]]))
-        if self.request.user.is_authenticated:
+        if request.user.is_authenticated:
             try:
                 # Get the current user UserProfile
-                userProfile = UserProfile.objects.get(user=self.request.user)
+                userProfile = UserProfile.objects.get(user=request.user)
             except UserProfile.DoesNotExist as e:
-                messages.add_message(self.request, messages.ERROR,  errorMessage["SPR"])
+                messages.add_message(request, messages.ERROR,  errorMessage["SPR"])
                 return response
 
             #check whether user has a subscription package
             if not userProfile.subscription_package:
-                messages.add_message(self.request, messages.ERROR, errorMessage["SPR"])
+                messages.add_message(request, messages.ERROR, errorMessage["SPR"])
                 return response
 
             #check whether the subscription expiration_date has reached
             if userProfile.calc_expiration_date() < timezone.now():
                 userProfile.subscription_package = None
                 userProfile.save()
-                messages.add_message(self.request, messages.ERROR, "SPX")
+                messages.add_message(request, messages.ERROR, "SPX")
                 return response
 
 
@@ -129,12 +179,12 @@ class DownloadQuestionView(View):
 
             #if user is on free subscription but trying to download a Premium question
             if q.question_type.upper() != "FREE" and userProfile.subscription_package.name.upper() == "FREE":
-                messages.add_message(self.request,messages.ERROR,errorMessage["PUO"])
+                messages.add_message(request,messages.ERROR,errorMessage["PUO"])
                 return response
 
             # check if user has  some downloads left
             if  userProfile.calc_downloads_left() < 1:
-                messages.add_message(self.request,messages.ERROR,errorMessage["NDL"])
+                messages.add_message(request,messages.ERROR,errorMessage["NDL"])
                 return response
 
             with open(q.question_file.path,"rb") as f:
@@ -143,20 +193,20 @@ class DownloadQuestionView(View):
                 response["Content-Disposition"] = "attachment; filename={0}".format(q.question_file.name)
             q.number_of_downloads += 1
 
-            #increase the user tital number of download if the question a premium
+            #increase the user total number of download if the question a premium
             if q.question_type.upper() != "FREE":
                 userProfile.total_downloads +=1
                 userProfile.save()
 
             return response
 
-        messages.add_message(self.request, messages.ERROR,  errorMessage["LR"])
+        messages.add_message(request, messages.ERROR,  errorMessage["LR"])
         return response
 
 
 class DownloadSolutionView(View):
     def get(self, request,*args, **kwargs):
-        if not self.request.user.is_anonymous:
+        if not request.user.is_anonymous:
             q = models.Question.objects.get(pk = kwargs["id"])
             with open(q.solution_file.path,"rb") as f:
                 response = HttpResponse(f.read())
