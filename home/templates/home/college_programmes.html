@@ -1,0 +1,32 @@
+{% extends "home/home_base.html" %}
+
+{% block head_title %}{{college_name}} programmes{% endblock %}
+{% block extra_head %}
+{% endblock %}
+
+{% block content %}
+
+<main>
+  <div class="container">
+    <h4 class="text-center">{{college_name}}</h4>
+    <div class="row">
+      <div class="col-md-4">
+        <ul class="list-group">
+        {% for programme in programmes %}
+          <li class="list-group-item">
+            <a href="{% url "home_programme_courses" programme.id %}">{{programme}}</a>
+          </li>
+          {% if forloop.counter|divisibleby:11 %}
+            </ul>
+            </div>
+            <div class="col-md-4">
+              <ul class="list-group">
+          {% endif %}
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% load static %}
+<div class="nav-container ">
+  <button id="btn_open_nav" type="button" class="btn btn-toggle"><span class="fas fa-bars"></span></button>
+
+  <nav id="nav" class="nav text-left ">
+    <div class="bg-primary position-relative">
+      <button type="button" id="btn_close_nav" class="btn btn-toggle">
+        <span class="fas fa-times"></span>
+        {% if request.user.is_anonymous %}
+          <a class="pl-5"><span class="fas fa-user-circle"></span> Hello. Welcome</a>
+          {% else %}
+          <a class="pl-5"><span class="fas fa-user-circle"></span> Hello {{request.user}}</a>
+        {% endif %}
+      </button>
+    </div>
+
+    {% if not user.is_authenticated %}
+      <div class="container">
+        <div class="row border-top  nav-top text-center bg-primary">
+          <div class="col-4">
+            <a href={% url "home_home" %} class="btn btn-secondary nav-top-link">Home</a>
+          </div>
+          <div class="col-4">
+            <a href={% url "account_login" %} class="btn btn-secondary nav-top-link">Login</a>
+          </div>
+          <div class="col-4">
+            <a href={% url "account_signup" %} class="btn btn-secondary nav-top-link">Sign up</a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="container">
+        <div class="row border-top  nav-top text-center  bg-secondary">
+          <div class="col-4">
+            <a href={% url "home_home" %} class="btn btn-secondary nav-top-link">Home</a>
+          </div>
+          <div class="col-4">
+            <a href={% url "account_logout" %} class="btn btn-secondary nav-top-link">Logout</a>
+          </div>
+        </div>
+
+        <div class="card text-center">
+          <div class="m-auto" style="width:80px; height:80px;">
+            <img class="card-img-top rounded-circle" src={% static "core/img/avatar.jpg" %} alt="Card Image">
+          </div>
+          <div class="card-body">
+            <h4 class="card-title mb-0">{{user}}</h4>
+            <a class="" href= {% url "user_profile" %}>view profile</a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    <div class="menu-container">
+      <ul class="menu">
+        <li class="menu-item has-child"><a>Get Question by Programmes</a>
+          <ul class="submenu">
+            {% for college in colleges %}
+            <li class="menu-item">
+              <a href="{% url "home_college_programmes" college.id %}">{{college.name}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+
+        <li class="menu-item has-child"> <a>Support</a>
+          <ul class="submenu">
+            <li class="menu-item"><a href="#">Contact us</a></li>
+            <li class="menu-item"><a href="#">Faqs</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

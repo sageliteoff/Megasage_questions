@@ -1,0 +1,11 @@
+<div class="card text-center">
+  <div class="card-body">
+    <p class="alert alert-warning">Subscription has expired.</p>
+    <p class="card-text">
+      Dear {{user.username}}, your subscription expiration date has reached.
+      you need to <b><a href={% url "subscription_packages" %}>renew your subscription</a></b>
+      before downloading this files. Thank you.
+    </p>
+    <button  type="button" id="hide_notification_btn" class="btn btn-info">Okay</button>
+  </div>
+</div>

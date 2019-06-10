@@ -1,0 +1,120 @@
+/*************************************** home ***************************************/
+.h1, h1{
+  font-size: 1.1em;
+}
+
+.home{
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.intro-section .intro-text{
+  line-height: 25px;
+  font-size: 1.1em;
+}
+
+.intro-section-heading{
+
+}
+
+.search-bar-container{
+  position: relative;
+  border-radius: 10px;
+  background-color: rgba(0,0,0,.08) !important;
+}
+
+
+.search-bar{
+  min-width: 80%;
+  border: none;
+  height: 40px;
+  outline-color: transparent;
+  background-color: rgba(0,0,0,.08) !important;
+  background: transparent;
+}
+
+@media (min-width:720px) {
+  .search-bar{
+    min-width: 92%;
+  }
+}
+
+
+.search-bar::placeholder{
+  color: #aeaeae;
+  font-size: 15px;
+  opacity: 0.8;
+}
+
+.search-btn{
+  position: absolute;
+  right: 0;
+  height: 100%;
+}
+
+.section-title{
+  padding: 10px 10px;
+}
+
+.question-col{
+  padding: 0 5px;
+  margin: 0 0;
+}
+.question-card{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.question-card .card-body {
+    padding: 0.2em 1.25rem;
+}
+
+
+.question-card .card-footer {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.question-card .card-header{
+  font-size: 0.85rem;
+}
+
+.question-card .card-title {
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+}
+
+.question-card p{
+   margin-top: 0;
+   margin-bottom: 0.6rem;
+   line-height: 0;
+}
+.question-card .btn {
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+    line-height: 1em;
+  }
+
+  /*************************************** question_details ***************************************/
+
+.section-question-details,
+.section-question-preview,
+.section-related-questions{
+    margin-top: 20px;
+  }
+
+.section-question-preview .card-header{
+    padding: 5px 5px;
+  }
+
+.question-preview-card{
+  min-height: 520px;
+  height: 520PX;
+  max-height: 520px;
+  overflow-y: scroll;
+}
+
+.section-related-questions .question-col {
+      padding: 0 5px;
+      margin: 0 0;
+  }

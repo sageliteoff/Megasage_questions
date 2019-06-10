@@ -1,0 +1,11 @@
+<div class="card text-center">
+  <div class="card-body">
+    <p class="alert alert-info">Downloads limit reached.</p>
+    <p class="card-text">
+      Dear {{user.username}}, You subscription download limit has reached.
+      click <b><a href="{% url "user_profile" %}">userprofile</a></b> to view the number of downloads
+      you have made, or <b> <a href="{% url "subscription_packages" %}">renew you package</a> </b>
+    </p>
+    <button  type="button" id="hide_notification_btn" class="btn btn-info">Okay</button>
+  </div>
+</div>

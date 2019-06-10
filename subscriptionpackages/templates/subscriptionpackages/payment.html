@@ -1,0 +1,75 @@
+{% extends "subscriptionpackages/subscriptionpackages_base.html" %}
+{% load static %}
+{% block head_title %}payment{% endblock %}
+
+{% block content %}
+  <main>
+    {% if package.name|lower == "free" %}
+    <h5  class="page-title text-center text-white">You selected a free package</h5>
+    {% else %}
+      <h5  class="page-title text-center text-white">You total payment is GHC {{package.price}}</h5>
+    {%endif%}
+    <div class="container">
+      <div class="row mt-3">
+        <div class="col-md-6 offset-md-3">
+          {% if package.name|lower == "free" %}
+            <p>
+              <h6>Note:</h6>
+              <ol>
+                <li class="py-1" >You wont be able to download premium questions</li>
+                <li class="py-1" >You won't have access to course materials</li>
+                <li class="py-1" >You won't have access to our online tutorials</li>
+                <li class="py-1" >You won't have access to our online tutorials</li>
+              </ol>
+            </p>
+
+            <form class="form" action="{% url "purchase_subscription_package"  package.id %}" method="post">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-primary form-submit_btn" value="Subscribe to free package">
+            </form>
+          {% else %}
+            <form class="form" action="{% url "purchase_subscription_package" package.id %}" method="post">
+            {% csrf_token %}
+            <ul class="">
+              <li> <label for="vendors" class="form-label">Select your Network Provider</label> </li>
+              <li class="">
+                <div class="row">
+                  <div class="col-6 pr-0">
+                    <label id="vendors_label" class="vendor_bg_img bg-mtn form-label py-4 w-100 border  text-center" for="vendors"></label>
+                  </div>
+                  <div class="col-6  pl-0">
+                    <select id="vendors" class="py-4 alert-dark border w-100" name="vendor">
+                      <option value="mtn">MTN</option>
+                      <option value="vodafone">VODAFONE</option>
+                      <option value="airtel">AIRTEL</option>
+                      <option value="tigo">TIGO</option>
+                    </select>
+                  </div>
+                </div>
+              </li>
+              <li >
+                <label for="billing_number" class="form-label">Mobile Number</label>
+                {{payment_form.mobileNumberInput}}
+              </li>
+              <li id="vodafone_token" class="vodafone_token">
+                <label for="vodafone-token-input" class="form-label">Vodafone token</label>
+                {{payment_form.vodafoneTokenInput}}
+              </li>
+              <li >
+                <label for="reference" class="form-label">Reference (optional)</label>
+                {{payment_form.referenceInput}}
+              </li>
+              <li>
+                <input type="submit" class="btn btn-primary form-submit_btn" value="Pay GHC {{package.price}}">
+              </li>
+            </ul>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}
+{% block extra_script %}
+  <script type="text/javascript" src="{% static "subscriptionpackages/js/payment.js" %}" ></script>
+{% endblock %}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% extends "home/home_base.html" %}
+{% load static %}
+
+{% block head_title %}ProgrammeDetails{% endblock %}
+
+{% block content %}
+
+<main id="programme_courses">
+  <h5 class="text-center pb-3 pt-3">{{programme}} Courses</h5>
+  <div class="container">
+    <p class="alert alert-secondary text-center">click on the level and select course you want to view questions on</p>
+    <div class="text-center mb-3">
+      <button class="toggler mb-3 btn bg-primary btn-lg" type="button">Level 100 Courses<span class="pl-2 fas fa-angle-down"></span></button>
+      <div class="row">
+        <div class="col-md-4">
+          <ul class="list-group">
+            {% for course in level_100_courses %}
+                <li class="list-group-item">
+                  <a href="{% url "home_course_questions" course.code %}">{{ course.title }} <span class="pl-1">({{course.code}})</span></a>
+                </li>
+                {% if forloop.counter|divisibleby:7 %}
+                {% comment %}
+                  if the forloop counter modulud 7 is 0, close the <ul>(group) as well as the div(col)
+                  and open new div(col) an ul(group)
+                {% endcomment %}
+                  </ul>
+                  </div>
+                  <div class="col-md-4">
+                  <ul class="list-group">
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mb-3">
+      <button class="toggler mb-3 btn bg-primary btn-lg" type="button">Level 200 Courses<span class="pl-2 fas fa-angle-down"></span></button>
+      <div class="row">
+        <div class="col-md-4">
+          <ul class="list-group">
+            {% for course in level_200_courses %}
+                <li class="list-group-item">
+                  <a href="{% url "home_course_questions" course.code %}">{{ course.title }} <span class="pl-1">({{course.code}})</span></a>
+                </li>
+                {% if forloop.counter|divisibleby:7 %}
+                {% comment %}
+                  if the forloop counter modulud 7 is 0, close the <ul>(group) as well as the div(col)
+                  and open new div(col) an ul(group)
+                {% endcomment %}
+                  </ul>
+                  </div>
+                  <div class="col-md-4">
+                  <ul class="list-group">
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mb-3">
+      <button class="toggler mb-3 btn bg-primary btn-lg" type="button">Level 300 Courses<span class="pl-2 fas fa-angle-down"></span></button>
+      <div class="row">
+        <div class="col-md-4">
+          <ul class="list-group">
+            {% for course in level_300_courses %}
+                <li class="list-group-item">
+                  <a href="{% url "home_course_questions" course.code %}">{{ course.title }} <span class="pl-1">({{course.code}})</span></a>
+                </li>
+                {% if forloop.counter|divisibleby:7 %}
+                {% comment %}
+                  if the forloop counter modulud 7 is 0, close the <ul>(group) as well as the div(col)
+                  and open new div(col) an ul(group)
+                {% endcomment %}
+                  </ul>
+                  </div>
+                  <div class="col-md-4">
+                  <ul class="list-group">
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mb-3">
+      <button class="toggler mb-3 btn  btn-lg bg-primary" type="button">Level 400 Courses<span class="pl-2 fas fa-angle-down"></span></button>
+      <div class="row">
+        <div class="col-md-4">
+          <ul class="list-group">
+            {% for course in level_400_courses %}
+                <li class="list-group-item"> <a href="#">course 400</a></li>
+                {% if forloop.counter|divisibleby:7 %}
+                {% comment %}
+                  if the forloop counter modulud 7 is 0, close the <ul>(group) as well as the div(col)
+                  and open new div(col) an ul(group)
+                {% endcomment %}
+                  </ul>
+                  </div>
+                  <div class="col-md-4">
+                  <ul class="list-group">
+                {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_script %}
+  <script type="text/javascript" src={% static "home/js/programme_courses.js" %}>
+  </script>
+{% endblock %}

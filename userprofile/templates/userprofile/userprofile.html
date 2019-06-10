@@ -1,0 +1,80 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block head_title %}user profile{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static "core/css/animation.css" %}">{% endblock %}
+
+
+{% block content %}
+  <main>
+    <div class="container-fluid px-0">
+      <div class="col-12 col-md-6 mt-3 px-0 offset-md-3">
+          {% if userprofile.subscription_package.name|lower == "free" %}
+            <h6 class="alert alert-warning" >You on a free package, <a href={% url "subscription_packages" %}>click to upgrage</a> your package</h6>
+          {% endif %}
+          <div class="card w-100">
+            <h5 class="card-title text-center alert bg-secondary mb-0">{{userprofile|capfirst}}</h5>
+            <div class="card-body p-1">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>Username:</td>
+                        <td>{{user.username}}</td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td>{{user.email}}</td>
+                      </tr>
+                      <tr>
+                        <td>Registration Date</td>
+                        <td>{{user.date_joined}}</td>
+                      </tr>
+                      <tr>
+                        <td>package</td>
+                        {% if userprofile.subscription_package %}
+                          <td>{{userprofile.subscription_package}}</td>
+                          <tr>
+                            <td>Total downloads</td>
+                            <td>{{userprofile.total_downloads}}</td>
+                          </tr>
+                          <tr>
+                            <td>Downloads left</td>
+                            <td>{{userprofile.calc_downloads_left}}</td>
+                          </tr>
+                          <tr>
+                            <td>date_purchased</td>
+                            <td>{{userprofile.date_purchased}}</td>
+                          </tr>
+                          <tr>
+                            <td>Days left</td>
+                            <td id="days_left">
+                              <div id="date_parameters_container">
+                                <span id="year">{{userprofile.calc_expiration_date.year}}</span>
+                                <span id="month">{{userprofile.calc_expiration_date.month}}</span>
+                                <span id="day">{{userprofile.calc_expiration_date.day}}</span>
+                                <span id="hour">{{userprofile.calc_expiration_date.hour}}</span>
+                                <span id="minute">{{userprofile.calc_expiration_date.minute}}</span>
+                                <span id="second">{{userprofile.calc_expiration_date.second}}</span>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Subscription will expire</td>
+                            <td>{{userprofile.calc_expiration_date}}</td>
+                          </tr>
+                          {% else %}
+                          <td> <a href={% url "subscription_packages" %}>subscribe to a package</a> </td>
+                        {% endif %}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+          </div>
+        </div>
+    </div>
+  </main>
+{% endblock %}
+
+{% block extra_script %}
+  <script type="text/javascript" src={% static "userprofile/js/userprofile.js" %}>
+  </script>
+{% endblock %}

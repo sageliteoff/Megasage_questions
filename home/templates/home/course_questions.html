@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+{% extends "home/home_base.html" %}
+{% load static %}
+{% block head_title %}questions{% endblock %}
+
+
+{% block content %}
+  <main class="course-questions">
+    <div class="container">
+      <div class="row mt-3">
+        <div class="col-12 p-0">
+          <div class=" search-bar-container">
+            <span class="fas fa-search pl-2"></span>
+            <input type="text"  class="search-bar" name="search"  placeholder="search course" value="">
+            <a class="btn btn-primary search-btn">search</a>
+          </div>
+        </div>
+      </div>
+      <h1 class="section-title text-center">{{course_title}} questions</h1>
+      <div class="row">
+        {% if questions %}
+          {% for question in questions%}
+            <div class="col-6 col-md-2 pb-2 question-col">
+            <div class="question-card card text-center">
+              <h5 class="card-header text-center text-truncate">{{question.course.title}}</h5>
+              <div class="card-body">
+                <h5 class="card-title">{{question.course.code}}</h5>
+                <a href="{% url "home_question_details" question.id %} " class="btn btn-primary">view</a>
+              </div>
+              <div class="card-footer text-left">
+                {{question.course.level}}
+                <span class="float-right">{{question.date.year}}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <h1>No questions has been added yet</h1>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+{% endblock %}

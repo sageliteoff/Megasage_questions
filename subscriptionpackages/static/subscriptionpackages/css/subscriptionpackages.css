@@ -1,0 +1,193 @@
+/***************************************subscription package***************************************/
+
+.pricing-page .banner{
+  background-image:url("../img/banner.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 124px;
+}
+
+.pricing-page .packages-container{
+   top: -100px;
+   position: relative;
+}
+
+.pricing-page .package{
+  margin-top: 40px;
+
+}
+
+.pricing-page .card{
+  box-shadow: 0px 1px 5px #ababab;
+  position: relative;
+}
+
+.pricing-page .package-callout{
+  background-color:teal;
+  min-width: 100%;
+  max-height: 30px;
+  border-radius: 5px 5px 0 0;
+  padding-top: 5px;
+}
+
+.pricing-page .package-callout p{
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.pricing-page .card-body{
+  padding: 20px;
+}
+
+
+.pricing-page .pricing .amount{
+  line-height: 10px;
+  font-size: 1.4em;
+}
+
+.pricing-page .pricing span{
+  font-size: 0.8em;
+}
+
+.pricing-page .card-link{
+  margin-top: 10px;
+  line-height: 15px;
+  min-width: 70%;
+  border-radius: 0;
+  font-size: 0.9em;
+}
+
+.pricing-page .package-features{
+  min-height: 180px;
+  margin-top: 20px;
+  background-color: #263d4f;
+  color: white;
+}
+
+.pricing-page .package-features .list-group-item{
+  background-color: transparent;
+}
+
+.pricing-page .main-features{
+  font-size: 1em !important;
+  font-weight: 500;
+}
+
+
+/*************************************** payment ***************************************/
+
+.vendor_bg_img{
+  background-size: 165px 100%;
+  background-clip: border-box;
+  background-repeat: no-repeat;
+  height: 75px;
+  background-position: center;
+}
+
+.bg-mtn{
+  background-image: url("../img/mtn.jpg");
+  background-color: #fecd1b;
+}
+
+.bg-airtel{
+  background-image: url("../img/airtel.jpg");
+}
+
+.bg-vodafone{
+  background-image: url("../img/vodafone.jpg");
+}
+
+.bg-tigo{
+  background-image: url("../img/tigo.jpg");
+}
+
+.vodafone_token{
+  display: none;
+}
+
+ul{
+  list-style: none;
+  padding: 0;
+}
+.page-title {
+    background-image: url(../img/banner.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    line-height: 50px;
+}
+
+
+
+.form-container{
+  position: relative;
+  max-width: 400px;
+}
+
+.form-errors-container{
+  min-width: 100%;
+  z-index: 1;
+  position: absolute;
+}
+
+.page-subtitle{
+  letter-spacing: 2px;
+}
+
+.form-section{
+  padding: 30px 20px;
+  box-shadow: 0 1px 5px #d0d0d0;
+}
+
+.form-input-text,
+.form-input-password,
+.form-submit_btn{
+  width: 100%;
+  line-height: 40px;
+  margin-bottom: 15px;
+}
+
+.form-label{
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.form-input-text,
+.form-input-password{
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding-left: 20px;
+  outline-color: transparent;
+}
+
+.form-input-text:hover,
+.form-input-password:hover{
+  outline-color: transparent;
+  box-shadow:0 0 5px gray;
+}
+
+.form-input-text::placeholder,
+.form-input-password::placeholder{
+  color: gray;
+  font-size: 15px;
+  opacity: 0.8;
+}
+
+.form-submit_btn{
+  font-weight: 500;
+}
+
+.bottom-section{
+  margin-top: -30px;
+  background-color: #efefef !important;
+  font-size: 18px;
+  padding-top: 30px;
+}
+
+.bottom-section>p{
+  padding:20px;
+  line-height: 30px;
+  margin: 0;
+  color: gray;
+}

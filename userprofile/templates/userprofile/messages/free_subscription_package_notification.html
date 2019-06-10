@@ -1,0 +1,11 @@
+<div class="card animated bounceIn">
+<h5 class="card-title text-center alert alert-warning mb-0">Nofication</h5>
+<div class="card-body">
+  <p class="card-text">
+    {% if userprofile.subscription_package.name|lower == "free" %}
+      You are currently on free subsctiption package. you <b>can not</b> download
+      <b>premium questions and solutions</b>, nor view study materials.
+    {% endif %}
+  </p>
+</div>
+</div>

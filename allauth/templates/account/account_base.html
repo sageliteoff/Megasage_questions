@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static "account/css/account.css" %}">
+{% endblock %}
+{% block content %}
+  <main>
+    <div class="container form-container">
+      {% if form.errors %}
+        <div class="position-relative">
+          <div id="notification" class="alert notification animate bounceIn">
+            <div class="card text-center alert-danger">
+              <div class="card-body">
+                <p class="card-text">
+                  {% for error in form.errors.values %}
+                    {{error}}
+                  {% endfor %}
+                </p>
+                <button  type="button" id="hide_notification_btn" class="btn btn-info">Okay</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="intro text-center text-secondary mt-3">
+        <h4 class="page-title"> {% block page_title %}page_title{% endblock %} </h4>
+        <p class="page-subtitle font-weight-light">{% block page_subtitle %}page_subtitle{% endblock %}</p>
+      </div>
+      <section class="form-section bg-white rounded-top">
+        {% block form %}
+          <p>replace this block with form. note no assumption has being made</p>
+        {% endblock %}
+      </section>
+    </div>
+  </main>
+  {% block extra_content %}{% endblock %}
+{% endblock %}

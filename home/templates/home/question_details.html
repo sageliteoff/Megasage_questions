@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+{% extends "home/home_base.html" %}
+{% load static %}
+
+{% block head_title %}question details{% endblock %}
+
+{% comment %}
+  block the base from showing messages.messages on this page is show in different way
+  messages are shown main content
+{% endcomment %}
+{% block notification %}
+{% endblock %}
+
+{% block content %}
+  <main>
+      <div class="container">
+        {% if messages %}
+          {% for message in messages %}
+            <div id="notification" class="notification border animate bounceIn">
+              {% if message.message == "LOGIN_REQUIRED" %}
+                {% include "home/messages/login_required.html" %}
+
+              {% elif message.message == "SUBSCRIPTION_PACKAGE_REQUIRED" %}
+                  {% include "home/messages/subscription_package_require.html" %}
+
+              {% elif message.message == "SUBSCRIPTION_PACKAGE_REQUIRED_HAS_EXPIRED" %}
+                  {% include "home/messages/subscription_package_has_expired.html" %}
+
+              {% elif message.message == "NO_DOWNLOADS_LEFT" %}
+                  {% include "home/messages/no_downloads_left.html" %}
+              {% elif message.message == "PREMIUM_USERS_ONLY" %}
+                  {% include "home/messages/premium_users_only.html" %}
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% if question.solution_file %}
+          <h5 class="text-center text-info">
+            The solution for this question has been provided.
+            click on <a href="#question-detail">solution</a> to download</h5>
+          {% else %}
+            <h5 class="text-center text-info">
+              The solution for this question is yet to provided.
+              Come back later for the solution</h5>
+        {% endif %}
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <section class="section-question-details">
+              <div class="card">
+                  <div class="card-header">
+                    <h5 class="card-title text-center">Question details</h5>
+                  </div>
+                  <div class="card-body">
+                    <table class="table">
+                      <tbody>
+                        <tr>
+                          <td>Title</td>
+                          <td>{{question.course.title}}</td>
+                        </tr>
+                        <tr>
+                          <td>Code</td>
+                          <td>{{question.course.code}}</td>
+                        </tr>
+                        <tr>
+                          <td>Quiz</td>
+                          <td>{{question.quiz_number}}</td>
+                        </tr>
+                        <tr>
+                          <td>Date</td>
+                          <td>{{question.date}}</td>
+                        </tr>
+                        <tr>
+                          <td>Tutor</td>
+                          <td>Unknown</td>
+                        </tr>
+                        <tr>
+                          <td>Type</td>
+                          <td>{{question.question_type}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="m-3">
+                      {% if question.question_file%}
+                        <a href={% url "home_download_question" question.id %} id="question_download_btn" class="btn btn-primary">Get question</a>
+                      {% else %}
+                        <a href="#" class="btn btn-outline-info disabled">Get question</a>
+                      {% endif %}
+                      {% if question.solution_file %}
+                        <button id="solution_download_btn" class="btn btn-success" type="button">Get Solution</button>
+                      {% else %}
+                        <a href="#" class="btn btn-outline-success disabled">Get solution</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="card-footer text-center">
+                    Last update: {{ question.pub_date }}
+                  </div>
+                </div>
+            </section>
+          </div>
+          <div class="col-12 col-md-6">
+            <section class="section-question-preview">
+              <div class="card question-preview-card" style="min-height:400px;">
+                <div class="card-header">
+                  <h5 class="text-center card-title">Preview of question</h5>
+                </div>
+                <div class="card-body question-preview">
+                  {{ question.page1|safe }}
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-12">
+            <section class="section-related-questions">
+              <h5 class="text-center text-info">Related Questions</h5>
+              <div class="row">
+                {% for question in related_questions %}
+                  <div class="col-6 col-md-2 question-col pb-2">
+                  <div class="question-card card  text-center">
+                    <h5 class="card-header text-center">{{question.course.title}}</h5>
+                    <div class="card-body">
+                      <h6 class="card-title">{{question.course.code}} {{question.quiz_number}}</h6>
+                      <a href="{% url "home_question_details" question.id %}" class="btn btn-primary">view</a>
+                    </div>
+                    <div class="card-footer text-left">{{question.course.level}}<span class="float-right">{{question.date.year}}</span></div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+  </main>
+
+{% endblock %}
+{% block extra_script %}
+  <script type="text/javascript" src="{% static "home/js/question_details.js" %}">
+  </script>
+{% endblock %}

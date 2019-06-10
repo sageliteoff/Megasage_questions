@@ -1,0 +1,96 @@
+{% extends "subscriptionpackages/subscriptionpackages_base.html" %}
+{% load  static %}
+{% block head_title %}subsctiption packages{% endblock %}
+
+{% block content %}
+
+  <main class="pricing-page">
+    <div class="banner"></div>
+    <div class="container">
+      <div class="row packages-container">
+
+        <!--Package 1 -->
+        <div class="col-md-4 text-center package">
+          <div class="card border-0">
+            <div class="card-body">
+
+              <h2 class="card-title">{{free_package.name}}</h2>
+              <p class="card-text text-muted">{{free_package.description}}</p>
+              <div class="pricing pt-3">
+                <p class="amount m-0 p-0">GHC {{free_package.price}}</p>
+                <span class="font-italic">for {{free_package.duration}} days</span>
+              </div>
+              <a href="{% url "purchase_subscription_package" free_package.id %}" class=" btn btn-info btn-lg card-link">Subscribe now</a>
+            </div>
+            <div class="package-features">
+              <ul class="list-group mt-2 main-features">
+                <li class="list-group-item border-0">Download all free question</li>
+                <li class="list-group-item border-0">Download all free solution</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!--Package 2 -->
+        <div class="col-md-4 text-center package">
+
+          <div class="card border-0">
+            <div class="package-callout">
+                <p>
+                  QUICK START
+                </p>
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">{{small_package.name}}</h2>
+              <p class="card-text text-muted">{{small_package.description}}</p>
+              <div class="pricing pt-3">
+                <p class="amount m-0 p-0">GHC {{small_package.price}}</p>
+                <span class="font-italic">per {{small_package.duration}} days</span>
+              </div>
+              <a href="{% url "purchase_subscription_package" small_package.id %}" class=" btn btn-info btn-lg card-link">Subscribe now</a>
+            </div>
+            <div class="package-features">
+              <ul class="list-group mt-2 main-features">
+                <li class="list-group-item border-0">Access to 10 Paid Questions and Solution</li>
+              </ul>
+              <ul class="list-group mt-2 other-features">
+                <li class="list-group-item border-0">Download all free question</li>
+                <li class="list-group-item border-0">Download all free solution</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!--Package 3 -->
+        <div class="col-md-4 text-center package">
+          <div class="card border-0">
+            <div class="package-callout">
+                <p>
+                  RECOMMENDED
+                </p>
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">Standard</h2>
+              <p class="card-text text-muted">Secure file sharing and collaboration. Ideal for small teams.</p>
+              <div class="pricing pt-3">
+                <p class="amount m-0 p-0">GHC 10</p>
+                <span class="font-italic">per 30 days</span>
+              </div>
+              <a href="#" class=" btn btn-info btn-lg card-link">Subscribe now</a>
+            </div>
+            <div class="package-features">
+            <ul class="list-group mt-2 main-features">
+              <li class="list-group-item border-0">Access to 25 paid questions and solution</li>
+              <li class="list-group-item border-0">Access to learning materials</li>
+            </ul>
+            <ul class="list-group mt-2 other-features">
+              <li class="list-group-item border-0">Download all free question</li>
+              <li class="list-group-item border-0">Download all free solution</li>
+            </ul>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

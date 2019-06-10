@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  {% load static  %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static "core/vendor/font-awesome/css/fontawesome-all.css" %} ">
+    <link rel="stylesheet" href="{% static "core/vendor/boostrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "core/css/core.css" %}">
+    {% block base_extra_head %}
+
+    {% endblock %}
+    <title>{% block head_title %}base template(core){% endblock %}</title>
+    {% block extra_head %}
+
+    {% endblock %}
+  </head>
+  <body>
+    <div id="overlay" class="overlay"></div>
+    {% block body %}
+      {% block header%}
+        <header class="">
+          <div class="header-top box-shadow-primay bg-primary">
+            <div class="container">
+              <div class="row text-center">
+                <div class="col-3"  >
+                  {% include "core/nav.html" %}
+                </div>
+                <div class="col-6">
+                  <a href="" class="text-white">MS Question</a>
+                </div>
+                <div class="col-3">
+                  <div class="dropdown" >
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><span class="fas fa-user"></span></button>
+                    <div class="dropdown-menu" style="z-index:10">
+                      {% if not user.is_authenticated %}
+                        <a href= {% url "account_login" %} class="dropdown-item">Login</a>
+                        <span class="dropdown-seperator"></span>
+                        <a href= {% url "account_signup" %} class="dropdown-item">Register</a>
+                      {% else %}
+                        <a href= {% url "account_logout" %} class="dropdown-item">Logout</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% block extra_header %}{% endblock %}
+        </header>
+        {% endblock %}
+
+      {% block notification %}
+        <div class="position-relative">
+          {% if messages %}
+          {% for message in messages %}
+            <div id="notification" class="notification border animate bounceIn">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h5 class="alert alert-success" >Notification</h5>
+                  <p class="card-text">
+                    {{message}}
+                  </p>
+                  <button  type="button" id="hide_notification_btn" class="btn btn-info">Okay</button>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+        </div>
+      {% endblock %}
+
+      {% block content %}
+      {% endblock %}
+
+      {% endblock %}
+      {% block extra_body %}
+    {% endblock %}
+    {% include "core/footer.html" %}
+    <script type="text/javascript" src="{% static "core/vendor/jquery/jquery-3.3.1.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "core/vendor/boostrap/js/popper.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "core/vendor/boostrap/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "core/js/core.js" %}"></script>
+    <script type="text/javascript" src= "{% static "core/js/nav.js" %}"></script>
+    {% block extra_script %}
+    {% endblock %}
+  </body>
+</html>
