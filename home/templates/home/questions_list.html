@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+{% extends "home/home_base.html" %}
+{% load static %}
+{% block head_title %}questions{% endblock %}
+
+
+{% block content %}
+  <main class="course-questions">
+    <div class="container">
+        <div class="row my-3 mx-1">
+            <div class="search-bar-container col">
+                <form class="" action={% url "home_search_results" %} method="GET">
+                  <span class="fas fa-search pl-2"></span>
+                  {{search_form.searchInput}}
+                  <input type="submit" class="btn btn-primary search-btn" value="Search" />
+                </form>
+              </div>
+        </div>
+        <div class="row">
+          
+          {% for question in questions%}
+            <div class="col-6 col-md-2 pb-2 question-col">
+            <div class="question-card card text-center">
+              <h5 class="card-header text-center text-truncate">{{question.course.title}}</h5>
+              <div class="card-body">
+                <h5 class="card-title">{{question.course.code}}</h5>
+                <a href="{% url "home_question_details" question.id %} " class="btn btn-primary">view</a>
+              </div>
+              <div class="card-footer text-left">
+                {{question.course.level}}
+                <span class="float-right">{{question.date.year}}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+    </div>
+  </main>
+{% endblock %}

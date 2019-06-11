@@ -34,7 +34,7 @@ class PurchaseSubscriptionPackagesView(View):
 
             #warn user when he tries to buy a new package but already has some downloads left
             if userprofile.subscription_package and userprofile.calc_downloads_left() > 0:
-                return HttpResponse("You Already have a {} package".format(userprofile.subscription_package))
+                messages.add_message(self.request, messages.WARNING, f"You Already have a {userprofile.subscription_package} package")
 
         except SubscriptionPackage.DoesNotExist as e:
             return HttpResponse("<h1>This Package Currently does not exist. choose a different package")
@@ -50,14 +50,14 @@ class PurchaseSubscriptionPackagesView(View):
 
     def post(self,*args,**kwargs):
         package =  SubscriptionPackage.objects.get(id=kwargs["id"])
-        userprofile = UserProfile.objects.get(user=self.request.user)
-        print(package,userprofile)
+        user_profile = UserProfile.objects.get(user=self.request.user)
         if package.name.lower() == "free":
             messages.add_message(self.request, messages.SUCCESS, ' subscription is succcesful')
-            userprofile.subscription_package = package
-            userprofile.total_downloads = 0
-            userprofile.downloads_left =  package.number_of_downloads
-            userprofile.save()
+            user_profile.subscription_package = package
+            user_profile.total_downloads = 0
+            user_profile.downloads_left =  package.number_of_downloads
+            user_profile.date_purchased = timezone.now()
+            user_profile.save()
 
         else:
             paymentForm = PaymentForm(self.request.POST)
