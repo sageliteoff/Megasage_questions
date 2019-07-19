@@ -1,0 +1,11 @@
+<div class="row my-3">
+    <div class="col-12 p-0">
+      <div class=" search-bar-container">
+        <form class="" action="{% url "home_search_results" %}" method="GET">
+          <span class="fas fa-search pl-2"></span>
+          {{search_form.searchInput}}
+            <input type="submit" class="btn btn-primary search-btn" value="Search" />
+        </form>
+      </div>
+    </div>
+  </div>

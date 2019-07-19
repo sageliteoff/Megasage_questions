@@ -3,7 +3,7 @@
     <p class="alert alert-info">You have to subscribe to a premium package.</p>
     <p class="card-text">
       It appears that you did not subscribe to any package, click the link to
-      subscribe to a package. <a href="{% url "subscription_packages" %}">subscribe</a>
+      subscribe to a package. <a href="{% url 'subscription_packages' %}?next={% url 'home_question_details' question.id %}">subscribe</a>
     </p>
     <button  type="button" id="hide_notification_btn" class="btn btn-info">Okay</button>
   </div>

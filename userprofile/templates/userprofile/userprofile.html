@@ -8,7 +8,7 @@
   <main>
     <div class="container-fluid px-0">
       <div class="col-12 col-md-6 mt-3 px-1 offset-md-3">
-            <h6 class="alert alert-success text-center" ><a href={% url "home_questions_list" %}>click here to go to the questions page</a></h6>
+            <h6 class="alert alert-success text-center" ><a href={% url "home_questions_list" 1 %}>click here to go to the questions page</a></h6>
           {% if userprofile.subscription_package.name|lower == "free" %}
             <h6 class="alert alert-warning" >You on a free package, <a href={% url "subscription_packages" %}>click to upgrage</a> your package</h6>
           {% endif %}
@@ -63,7 +63,7 @@
                             <td>{{userprofile.calc_expiration_date}}</td>
                           </tr>
                           {% else %}
-                          <td> <a href={% url "subscription_packages" %}>subscribe to a package</a> </td>
+                          <td> <a href={% url "subscription_packages"%}>subscribe to a package</a> </td>
                         {% endif %}
                       </tr>
                     </tbody>

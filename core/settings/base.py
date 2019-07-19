@@ -70,7 +70,7 @@ ACCOUNT_FORMS ={
 
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_VERIFICATION = " none" #mandory none optional
-LOGIN_REDIRECT_URL = "/userprofile"
+LOGIN_REDIRECT_URL = "/questions/page/1"
 ACCOUNT_USERNAME_MIN_LENGTH = 3
 
 # Password validation

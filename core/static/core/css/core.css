@@ -26,6 +26,74 @@ button.bg-primary:focus, button.bg-primary:hover {
 }
 
 
+/*************************************** common elements ***************************************/
+
+
+.h1, h1{
+  font-size: 1.1em;
+}
+
+
+.section-title{
+  padding: 10px 10px;
+  text-align: center;
+
+}
+
+
+/*************************************** intro section ***************************************/
+
+
+.intro-section .intro-text{
+  line-height: 25px;
+  font-size: 1.1em;
+}
+
+.intro-section-heading{
+  text-align: center;
+}
+
+
+
+/*************************************** search bar form ***************************************/
+
+
+.search-bar-container{
+  position: relative;
+  border-radius: 10px;
+  background-color: rgba(0,0,0,.08) !important;
+}
+
+
+.search-bar{
+  min-width: 80%;
+  border: none;
+  height: 40px;
+  outline-color: transparent;
+  background-color: rgba(0,0,0,.08) !important;
+  background: transparent;
+}
+
+@media (min-width:720px) {
+  .search-bar{
+    min-width: 92%;
+  }
+}
+
+
+.search-bar::placeholder{
+  color: #aeaeae;
+  font-size: 15px;
+  opacity: 0.8;
+}
+
+.search-btn{
+  position: absolute;
+  right: 0;
+  height: 100%;
+}
+
+
 /*************************************** nav ***************************************/
 .nav-container{
   display: inline-block;

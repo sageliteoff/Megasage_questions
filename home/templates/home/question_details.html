@@ -30,6 +30,8 @@
                   {% include "home/messages/no_downloads_left.html" %}
               {% elif message.message == "PREMIUM_USERS_ONLY" %}
                   {% include "home/messages/premium_users_only.html" %}
+              {% else %}
+                  {% include 'core/notification_box.html' %}
               {% endif %}
             </div>
           {% endfor %}
@@ -81,14 +83,14 @@
                     </table>
                     <div class="m-3">
                       {% if question.question_file%}
-                        <a href={% url "home_download_question" question.id %} id="question_download_btn" class="btn btn-primary">Get question</a>
+                        <a href={% url "home_download_question" question.id %} id="question_download_btn" class="btn btn-primary">View question</a>
                       {% else %}
-                        <a href="#" class="btn btn-outline-info disabled">Get question</a>
+                        <a href="#" class="btn btn-outline-info disabled">View question</a>
                       {% endif %}
                       {% if question.solution_file %}
-                        <button id="solution_download_btn" class="btn btn-success" type="button">Get Solution</button>
+                        <button id="solution_download_btn" class="btn btn-success" type="button">View Solution</button>
                       {% else %}
-                        <a href="#" class="btn btn-outline-success disabled">Get solution</a>
+                        <a href="#" class="btn btn-outline-success disabled">View solution</a>
                       {% endif %}
                     </div>
                   </div>
@@ -122,7 +124,7 @@
                     <h5 class="card-header text-center">{{question.course.title}}</h5>
                     <div class="card-body">
                       <h6 class="card-title">{{question.course.code}} {{question.quiz_number}}</h6>
-                      <a href="{% url "home_question_details" question.id %}" class="btn btn-primary">view</a>
+                      <a href="{% url 'home_question_details' question.id %}" class="btn btn-primary">view</a>
                     </div>
                     <div class="card-footer text-left">{{question.course.level}}<span class="float-right">{{question.date.year}}</span></div>
                   </div>

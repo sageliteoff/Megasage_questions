@@ -8,15 +8,8 @@
 {% block content %}
   <main class="course-questions">
     <div class="container">
-        <div class="row my-3 mx-1">
-            <div class="search-bar-container col">
-                <form class="" action={% url "home_search_results" %} method="GET">
-                  <span class="fas fa-search pl-2"></span>
-                  {{search_form.searchInput}}
-                  <input type="submit" class="btn btn-primary search-btn" value="Search" />
-                </form>
-              </div>
-        </div>
+   
+        {% include 'core/search_bar_form.html' %}
         <div class="row">
           
           {% for question in questions%}
@@ -35,7 +28,6 @@
           </div>
           {% endfor %}
         </div>
-
     </div>
   </main>
 {% endblock %}

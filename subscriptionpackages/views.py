@@ -13,6 +13,7 @@ from requests.auth import HTTPBasicAuth
 import requests
 import json
 
+
 @method_decorator(login_required, name="dispatch")
 class SubscriptionPackagesView(TemplateView):
     template_name = "subscriptionpackages/packages_page.html"
@@ -38,6 +39,12 @@ class PurchaseSubscriptionPackagesView(View):
 
         except SubscriptionPackage.DoesNotExist as e:
             return HttpResponse("<h1>This Package Currently does not exist. choose a different package")
+        except UserProfile.DoesNotExist as e:
+            userprofile = UserProfile(
+                user = self.request.user,
+                subscription_package = None,
+            ).save()
+
         if package ==  SubscriptionPackage.objects.get(name="Free"):
             return render(
                 self.request,
@@ -52,12 +59,16 @@ class PurchaseSubscriptionPackagesView(View):
         package =  SubscriptionPackage.objects.get(id=kwargs["id"])
         user_profile = UserProfile.objects.get(user=self.request.user)
         if package.name.lower() == "free":
-            messages.add_message(self.request, messages.SUCCESS, ' subscription is succcesful')
-            user_profile.subscription_package = package
-            user_profile.total_downloads = 0
-            user_profile.downloads_left =  package.number_of_downloads
-            user_profile.date_purchased = timezone.now()
-            user_profile.save()
+            # Don't allow user to repurchase a free package when the existing one hasn't expire yet 
+            if user_profile.subscription_package != None and user_profile.calc_days_left() !=  0:
+                messages.add_message(self.request, messages.WARNING, f'Sorry try again in {user_profile.calc_days_left()}')                
+            else:
+                messages.add_message(self.request, messages.SUCCESS, ' subscription is succcesful')
+                user_profile.subscription_package = package
+                user_profile.total_downloads = 0
+                user_profile.downloads_left =  package.number_of_downloads
+                user_profile.date_purchased = timezone.now()
+                user_profile.save()
 
         else:
             paymentForm = PaymentForm(self.request.POST)

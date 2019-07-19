@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
     HomeView,
+    AboutView,
     QuestionsList,
     CollegeProgrammesView,
     ProgrammeCoursesView,
@@ -12,7 +13,8 @@ from .views import (
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home_home" ),
-    path("questions", QuestionsList.as_view(), name="home_questions_list"),
+    path("about", AboutView.as_view(), name="home_about" ),
+    path("questions/page/<int:page>", QuestionsList.as_view(), name="home_questions_list"),
     path("question/<int:id>/details",QuestionDetailsView.as_view(),name="home_question_details"),
     path("colleges/<int:id>/programmes",CollegeProgrammesView.as_view(),name="home_college_programmes"),
     path("programmes/<int:id>/courses",ProgrammeCoursesView.as_view(),name="home_programme_courses"),

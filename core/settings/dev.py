@@ -6,7 +6,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ["localhost","192.168.43.5", "192.168.200.10", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost","192.168.43.5", "192.168.200.10", "127.0.0.1", "192.168.100.101"]
 
 DATABASES = {
     'default': {

@@ -1,60 +1,11 @@
+
 /*************************************** home ***************************************/
-.h1, h1{
-  font-size: 1.1em;
-}
 
 .home{
   max-width: 90%;
   margin: 0 auto;
 }
 
-.intro-section .intro-text{
-  line-height: 25px;
-  font-size: 1.1em;
-}
-
-.intro-section-heading{
-
-}
-
-.search-bar-container{
-  position: relative;
-  border-radius: 10px;
-  background-color: rgba(0,0,0,.08) !important;
-}
-
-
-.search-bar{
-  min-width: 80%;
-  border: none;
-  height: 40px;
-  outline-color: transparent;
-  background-color: rgba(0,0,0,.08) !important;
-  background: transparent;
-}
-
-@media (min-width:720px) {
-  .search-bar{
-    min-width: 92%;
-  }
-}
-
-
-.search-bar::placeholder{
-  color: #aeaeae;
-  font-size: 15px;
-  opacity: 0.8;
-}
-
-.search-btn{
-  position: absolute;
-  right: 0;
-  height: 100%;
-}
-
-.section-title{
-  padding: 10px 10px;
-}
 
 .question-col{
   padding: 0 5px;
@@ -67,12 +18,14 @@
 }
 .question-card .card-body {
     padding: 0.2em 1.25rem;
+    font-size: 0.85rem;
 }
 
 
 .question-card .card-footer {
   padding-top: 3px;
   padding-bottom: 3px;
+  font-size: 0.85rem;
 }
 
 .question-card .card-header{
@@ -91,8 +44,12 @@
 }
 .question-card .btn {
     padding: 0.3rem 0.5rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1em;
+  }
+
+  .question-card .card-footer::before{
+    content: "Level ";
   }
 
   /*************************************** question_details ***************************************/

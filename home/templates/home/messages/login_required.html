@@ -2,8 +2,8 @@
   <div class="card-body">
     <p class="alert alert-info">You have to login before downloading the file.</p>
     <p class="card-text">
-      If you already have an account click here to <a href={% url "account_login" %}>Login</a>,
-      or click <a href="{% url "account_signup" %}">Sign up</a> to create an account.
+      If you already have an account click here to <a href="{% url 'account_login' %}?next={% url 'home_question_details' question.id %}">Login</a>,
+      or click <a href="{% url 'account_signup' %}?next={% url 'home_question_details' question.id %}">Sign up</a> to create an account.
     </p>
     <button  type="button" id="hide_notification_btn" class="btn btn-info">Okay</button>
   </div>

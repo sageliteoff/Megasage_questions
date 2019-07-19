@@ -10,6 +10,9 @@ from django.contrib import messages
 from utils.error_messages import errorMessage
 from utils.exceptions import *
 from .forms import SearchForm
+from django.core.paginator import Paginator
+from django.utils.decorators import method_decorator
+from allauth.account.decorators import login_required
 
 
 class HomeView(TemplateView):
@@ -18,8 +21,18 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         questions = models.Question.objects.filter(published=True)
-        context["recent_questions"] = questions.order_by("-pub_date")
+        context["recent_questions"] = questions.order_by("-pub_date")[:10]
         context["search_form"]  = SearchForm()
+        return context
+
+
+class AboutView(TemplateView):
+    template_name = "home/about.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        questions = models.Question.objects.filter(published=True)
+        context["recent_questions"] = questions.order_by("-pub_date")[:10] 
         return context
 
 
@@ -28,7 +41,9 @@ class QuestionsList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(QuestionsList, self).get_context_data(**kwargs)
-        context["questions"] = models.Question.objects.all().order_by("-pub_date")
+        questions = models.Question.objects.all().order_by("-pub_date")
+        paginator = Paginator(questions, 10)
+        context["questions"] = paginator.get_page(kwargs["page"])
         context["search_form"]  = SearchForm()
         return context
     
@@ -141,7 +156,7 @@ def makeVerifcations(request, kwargs):
     if  userProfile.calc_downloads_left() < 1:
             raise NodownloadsLeft(errorMessage["NDL"])
 
-   
+  
 class DownloadQuestionView(View):
     def get(self, request, *args, **kwargs):
         response = HttpResponseRedirect(reverse("home_question_details", args=[kwargs["id"]]))
@@ -150,6 +165,10 @@ class DownloadQuestionView(View):
             context = {
                 "question": models.Question.objects.get(pk=kwargs["id"])
             }
+            # Get the current user UserProfile
+            userProfile = UserProfile.objects.get(user=request.user)
+            userProfile.total_downloads += 1
+            userProfile.save()
             return render_to_response("home/question_content.html",context)
         except LoginRequired:
             messages.add_message(self.request, messages.ERROR, errorMessage["LR"])

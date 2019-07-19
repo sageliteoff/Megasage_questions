@@ -6,44 +6,14 @@
 {% block extra_head %}<link rel="stylesheet" href="{% static "home\css\home.css" %}">{% endblock %}
 
 {% block extra_header %}
-  <div class="intro-section text-center mt-1 mb-4 pb-5 container-fluid bg-primary">
-    <div class="row py-3">
-      <div class="col">
-        <h3 class="mt-4 py-3 intro-section-heading">MEGASAGE QUESTIONS</h3>
-      </div>
-    </div>
-    <div class="row my-3">
-      <div class="col-12 ">
-        <p class="text-justify intro-text text-center">We provide you with all UCC <b>past questions</b> with solutions you need
-          to excel in your academics.
-        </p>
-      </div>
-    </div>
-    <div class="row my-3">
-      <div class="col-6 offset-3">
-        <p class=""><a href="#" class="btn btn-primary">Read more</a></p>
-      </div>
-    </div>
-
-  </div>
+  {% include 'core/intro_section.html' %}
 {% endblock %}
 
 {% block content %}
   <main class="home">
     <section>
       <div class="container">
-        <div class="row mt-3">
-          <div class="col-12 p-0">
-            <div class=" search-bar-container">
-              <form class="" action="{% url "home_search_results" %}" method="GET">
-                <span class="fas fa-search pl-2"></span>
-                {{search_form.searchInput}}
-                  <input type="submit" class="btn btn-primary search-btn" value="Search" />
-              </form>
-            </div>
-          </div>
-        </div>
-
+       {% include 'core/search_bar_form.html' %}
         <h1 class="section-title">Recent questions</h1>
         <div class="row">
           {% for question in recent_questions%}
@@ -52,7 +22,7 @@
               <h5 class="card-header text-center ">{{question.course.title}}</h5>
               <div class="card-body">
                 <h6 class="card-title">{{question.course.code}} {{question.quiz_number}}</h6>
-                <a href="{% url "home_question_details" question.id %} " class="btn btn-primary">view</a>
+                <a href={% url "home_question_details" question.id %} class="btn btn-primary">view</a>
               </div>
               <div class="card-footer text-left">
                 {{question.course.level}}
@@ -61,6 +31,7 @@
             </div>
           </div>
           {% endfor %}
+          <div class="text-center w-100 my-2"><a class="btn btn-primary" href= {% url "home_questions_list" 2 %}> More questions</a></div>
         </div>
       </div>
     </section>

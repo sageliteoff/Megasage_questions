@@ -1,0 +1,17 @@
+<div class="position-relative">
+    {% if messages %}
+    {% for message in messages %}
+      <div id="notification" class="notification border animate bounceIn">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="alert alert-success" >Notification</h5>
+            <p class="card-text">
+              {{message}}
+            </p>
+            <button  type="button" id="hide_notification_btn" class="btn btn-info">Okay</button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+  </div>
